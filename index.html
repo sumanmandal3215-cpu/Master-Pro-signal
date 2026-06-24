@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomo Official Robot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* ব্যাকগ্রাউন্ড ভিডিও সবসময় ফুল স্ক্রিনে চলতে থাকবে */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.3); /* ভিডিওর ওপর হালকা অন্ধকার ছায়া */
+            padding: 20px;
+        }
+
+        /* মেইন অ্যাপ কন্টেইনার (ভিডিওর ওপর ভাসমান থাকবে) */
+        .app-container {
+            background: rgba(10, 15, 30, 0.85); 
+            border: 2px solid #00ff66;
+            border-radius: 25px;
+            padding: 25px 20px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.3);
+        }
+
+        h2 {
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 11px;
+            color: #00ff66;
+            letter-spacing: 3px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .divider {
+            border: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* মার্কেট ড্রপডাউন */
+        select {
+            width: 100%;
+            padding: 14px;
+            background: #cbd5e1;
+            color: black;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            outline: none;
+        }
+
+        /* সিগন্যাল আউটপুট স্ক্রিন */
+        .output-box {
+            width: 100%;
+            background: #111827;
+            padding: 18px;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* টাইমার বক্স */
+        .timer-box {
+            width: 100%;
+            background: #f59e0b;
+            color: black;
+            padding: 14px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* বাটন স্টাইল */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .signal-btn {
+            background: #06b6d4;
+            color: white;
+        }
+
+        /* বাটন যখন লক থাকবে তখন ওটার স্টাইল */
+        .btn:disabled {
+            background: #4b5563 !important;
+            color: #9ca3af !important;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* টেলিগ্রাম লিঙ্ক */
+        .telegram-link {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .telegram-link a {
+            color: #06b6d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="1000016063.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="app-container">
+        <h2>BINOMO SIGNAL</h2>
+        <p class="subtitle">OFFICIAL ROBOT</p>
+        
+        <hr class="divider">
+
+        <div class="input-group">
+            <label>SELECT MARKET</label>
+            <select id="market-select">
+                <option value="Crypto IDX">Crypto IDX</option>
+                <option value="Altcoin IDX">Altcoin IDX</option>
+                <option value="EUR/USD (OTC)">EUR/USD (OTC)</option>
+                <option value="EUR/JPY (OTC)">EUR/JPY (OTC)</option>
+                <option value="GBP/USD (OTC)">GBP/USD (OTC)</option>
+                <option value="USD/JPY (OTC)">USD/JPY (OTC)</option>
+                <option value="AUD/USD (OTC)">AUD/USD (OTC)</option>
+                <option value="NZD/USD (OTC)">NZD/USD (OTC)</option>
+                <option value="USD/CAD (OTC)">USD/CAD (OTC)</option>
+                <option value="USD/CHF (OTC)">USD/CHF (OTC)</option>
+                <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                <option value="Litecoin (LTC)">Litecoin (LTC)</option>
+                <option value="Gold (OTC)">Gold (OTC)</option>
+                <option value="EUR/GBP (OTC)">EUR/GBP (OTC)</option>
+                <option value="CAD/JPY (OTC)">CAD/JPY (OTC)</option>
+            </select>
+        </div>
+
+        <div class="output-box">
+            <span id="signal-text">ANALYZING MARKET... 📊</span>
+        </div>
+
+        <div class="timer-box">
+            <span id="timer">01 : 00</span>
+        </div>
+
+        <button class="btn signal-btn" id="sig-btn" onclick="generateSignal()">GET SIGNAL</button>
+
+        <div class="telegram-link">
+            ✈️ Telegram: <a href="https://t.me/Suman_trader_70" target="_blank">@Suman_trader_70</a>
+        </div>
+    </div>
+
+    <script>
+        let countdown;
+        const timerElement = document.getElementById("timer");
+        const signalText = document.getElementById("signal-text");
+        const signalBtn = document.getElementById("sig-btn");
+        const marketSelect = document.getElementById("market-select");
+
+        // শুরুতে টেক্সট কালার নীলচে থাকবে (অ্যানালাইসিস মুড)
+        signalText.style.color = "#6366f1";
+
+        function generateSignal() {
+            // বাটন লক করা এবং মার্কেট চেঞ্জ বন্ধ করা
+            signalBtn.disabled = true;
+            marketSelect.disabled = true;
+            
+            signalText.innerText = "GENERATING SIGNAL...";
+            signalText.style.color = "#f59e0b";
+
+            // ১.৫ সেকেন্ড পর সিগন্যাল দেখাবে এবং টাইমার শুরু হবে
+            setTimeout(() => {
+                const market = marketSelect.value;
+                const directions = ["CALL (UP) 🟢", "PUT (DOWN) 🔴"];
+                const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+                
+                signalText.innerText = market + " -> " + randomDirection;
+                signalText.style.color = "#00ff66"; // সিগন্যাল দিলে সবুজ রঙ হবে
+                
+                startTimer(60); // ৬০ সেকেন্ড (১ মিনিট) টাইমার শুরু
+            }, 1500);
+        }
+
+        function startTimer(seconds) {
+            clearInterval(countdown);
+            let timeLeft = seconds;
+
+            countdown = setInterval(() => {
+                timeLeft--;
+                
+                // টাইমার ফরম্যাট করা (যেমন: 00 : 45)
+                let displaySeconds = timeLeft < 10 ? "0" + timeLeft : timeLeft;
+                timerElement.innerText = "00 : " + displaySeconds;
+
+                // টাইমার শেষ হলে যা হবে
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    
+                    // ১ মিনিট পর আবার অ্যানালাইজ মুডে ফিরে যাবে
+                    timerElement.innerText = "01 : 00";
+                    signalText.innerText = "ANALYZING MARKET... 📊";
+                    signalText.style.color = "#6366f1";
+                    
+                    // বাটন ও মার্কেট সিলেক্ট আনলক হবে
+                    signalBtn.disabled = false;
+                    marketSelect.disabled = false;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+  </html>
+                  
